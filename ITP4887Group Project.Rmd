@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+output: html_document
+---
+1.Convert the data source format (JSON) to the dataframe. 
+```{r}
+# 將 JSON 資料格式轉為 data frame
+#install.packages("jsonlite")
+require(jsonlite)
+jsonList <- fromJSON(file.choose())
+```
+
+2.
+```{r}
+#install.packages('lubridate')
+library(lubridate)
+jsonList$date<-dmy(jsonList$date)
+```
+
+
+3. Fill all missing data with 0s except the sq. column.
+```{r}
+#used is.null 
+jsonList[c("price","types","address","beds","baths","bath","reception","receptions","bed")][is.na(jsonList[c("price","types","address","beds","baths","bath","reception","receptions","bed")])] <-0
+
+```
+
+4.Aggregate the number of corresponding facilities (Bed, Baths, Reception).
+```{R}
+aggregate(jsonList$bed, list(jsonList$bed), length)
+aggregate(jsonList$baths, list(jsonList$baths), length)
+aggregate(jsonList$reception, list(jsonList$reception), length)
+```
+
+5.Extract Property type from “types” column.
+```{R}
+jsonList["types"]
+```
+
+6.Output your pre-processed data to CSV format called ”Project_Housing.csv”.
+```{R}
+write.csv(jsonList,"E:\\ITP4887\\ITP4887Group Project\\Project_Housing.csv", row.names = FALSE)
+```
