@@ -34,7 +34,7 @@ aggregate(jsonList$reception, list(jsonList$reception), length)
 
 5.Extract Property type from “types” column.
 ```{R}
-jsonList["types"]
+str(jsonList)
 ```
 
 6.Output your pre-processed data to CSV format called ”Project_Housing.csv”.
