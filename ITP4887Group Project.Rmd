@@ -23,18 +23,42 @@ jsonList$date<-dmy(jsonList$date)
 #used is.null 
 jsonList[c("price","types","address","beds","baths","bath","reception","receptions","bed")][is.na(jsonList[c("price","types","address","beds","baths","bath","reception","receptions","bed")])] <-0
 
+jsonList
+
 ```
 
 4.Aggregate the number of corresponding facilities (Bed, Baths, Reception).
 ```{R}
-aggregate(jsonList$bed, list(jsonList$bed), length)
-aggregate(jsonList$baths, list(jsonList$baths), length)
-aggregate(jsonList$reception, list(jsonList$reception), length)
+
+df <- jsonList
+
+df["TotalBeds"] <- as.numeric(df$beds)+as.numeric(df$bed)
+df["TotalBaths"] <- as.numeric(df$baths)+as.numeric(df$bath)
+df["TotalReceptions"] <- as.numeric(df$receptions)+as.numeric(df$reception)
+df
+
 ```
 
 5.Extract Property type from “types” column.
 ```{R}
-str(jsonList)
+df$FlatType <- df$types
+df$FlatType[grep("flat",df$types)]= "flat"
+df$FlatType[grep("detached house",df$types)]= "detached house"
+df$FlatType[grep("Detached house",df$types)]= "Detached house"
+df$FlatType[grep("tettaced house",df$types)]= "terraced house"
+df$FlatType[grep("semi-detached house",df$types)]= "semi-detached house"
+df$FlatType[grep("end terrace house",df$types)]= "end terrace house"
+df$FlatType[grep("property",df$types)]= "Property"
+df$FlatType[grep("Property",df$types)]= "Property"
+df$FlatType[grep("maisonette",df$types)]= "maisonette"
+df$FlatType[grep("studio",df$types)]= "studio"
+df$FlatType[grep("cottage",df$types)]= "cottage"
+df$FlatType[grep("bed mews house",df$types)]= "bed mews house"
+df$FlatType[grep("town house",df$types)]= "town house"
+df$FlatType[grep("bungalow",df$types)]= "bungalow"
+df
+
+
 ```
 
 6.Output your pre-processed data to CSV format called ”Project_Housing.csv”.
