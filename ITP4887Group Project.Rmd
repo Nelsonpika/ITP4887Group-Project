@@ -5,14 +5,14 @@ output: html_document
 1.Convert the data source format (JSON) to the dataframe. 
 ```{r}
 # 將 JSON 資料格式轉為 data frame
-#install.packages("jsonlite")
+install.packages("jsonlite")
 require(jsonlite)
 jsonList <- fromJSON(file.choose())
 ```
 
 2.
 ```{r}
-#install.packages('lubridate')
+install.packages('lubridate')
 library(lubridate)
 jsonList$date<-dmy(jsonList$date)
 ```
@@ -41,27 +41,12 @@ df
 
 5.Extract Property type from “types” column.
 ```{R}
-df$FlatType <- df$types
-df$FlatType[grep("flat",df$types)]= "flat"
-df$FlatType[grep("detached house",df$types)]= "detached house"
-df$FlatType[grep("Detached house",df$types)]= "Detached house"
-df$FlatType[grep("tettaced house",df$types)]= "terraced house"
-df$FlatType[grep("semi-detached house",df$types)]= "semi-detached house"
-df$FlatType[grep("end terrace house",df$types)]= "end terrace house"
-df$FlatType[grep("property",df$types)]= "Property"
-df$FlatType[grep("Property",df$types)]= "Property"
-df$FlatType[grep("maisonette",df$types)]= "maisonette"
-df$FlatType[grep("studio",df$types)]= "studio"
-df$FlatType[grep("cottage",df$types)]= "cottage"
-df$FlatType[grep("bed mews house",df$types)]= "bed mews house"
-df$FlatType[grep("town house",df$types)]= "town house"
-df$FlatType[grep("bungalow",df$types)]= "bungalow"
+df$FlatType <- gsub("[0-9]+ bed | for sale", "", df$types)
 df
-
 
 ```
 
 6.Output your pre-processed data to CSV format called ”Project_Housing.csv”.
 ```{R}
-write.csv(jsonList,"E:\\ITP4887\\ITP4887Group Project\\Project_Housing.csv", row.names = FALSE)
+write.csv(df,"D:\\ITP4887\\ITP4887_Project\\ITP4887Group-Project-main\\Project_Housing.csv", row.names = FALSE)
 ```
