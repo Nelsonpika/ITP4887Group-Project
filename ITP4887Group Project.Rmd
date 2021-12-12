@@ -1,5 +1,5 @@
 ---
-title: "Untitled"
+title: "ITP4887_Group Project_Data Pre-processing"
 output: html_document
 ---
 1.Convert the data source format (JSON) to the dataframe. 
@@ -29,7 +29,6 @@ jsonList
 
 4.Aggregate the number of corresponding facilities (Bed, Baths, Reception).
 ```{R}
-
 df <- jsonList
 
 df["TotalBeds"] <- as.numeric(df$beds)+as.numeric(df$bed)
